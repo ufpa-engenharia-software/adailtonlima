@@ -49,13 +49,15 @@ codFederacao String
 
 
 relationship OneToMany { 
-	Copa {jogos} to Jogo {copa},
-	Time {jogadores} to Jogador{time},  
-	Jogo {cartoes} to Cartao{jogo},    
-    Jogo {gols} to Gol{jogo},    
-    Juiz {jogosApitados} to Jogo{juiz},
-    Juiz {jogosBandeira1} to Jogo{bandeira1},
-    Juiz {jogosBandeira2} to Jogo{bandeira2},
-    Time {jogosCasa} to Jogo{timeCasa},
+    Copa {jogos} to Jogo {copa}
+    Time {jogadores} to Jogador{time}
+    Jogo {cartoes} to Cartao{jogo}
+    Jogo {gols} to Gol{jogo}
+    Jogador{gols} to Gol{jogador}
+    Jogador{cartoes} to Cartao{jogador}
+    Juiz {jogosApitados} to Jogo{juiz}
+    Juiz {jogosBandeira1} to Jogo{bandeira1}
+    Juiz {jogosBandeira2} to Jogo{bandeira2}
+    Time {jogosCasa} to Jogo{timeCasa}
     Time {jogosVisitante} to Jogo{timeVisitante}
 } 
