@@ -1,0 +1,201 @@
+enum TipoAviso {
+	PROMOCAO, EVENTO, GERAL
+}
+
+enum AlvoAviso {
+	TODOS, PROFISSIONAIS, ADMINISTRADORES
+}
+
+entity Aviso {
+	tipo TipoAviso required
+    alvo AlvoAviso required
+	titulo String required
+    descricao TextBlob
+    bannerUrl String
+    criado ZonedDateTime required
+    ativo Boolean
+}
+
+entity Evento {
+	nome String required
+    descricao TextBlob
+    bannerUrl String
+    dia LocalDate
+    horario String
+    local String
+    comoChegar String
+    criado ZonedDateTime required
+}
+
+entity Administrador {
+    nome String required
+	telefone String
+    telefoneWhatsapp Boolean
+    ativo Boolean
+	criado ZonedDateTime required
+}
+
+entity PermissaoAdministrador{
+	criado ZonedDateTime
+    ativo Boolean
+    tipo Permissao
+}
+
+enum Permissao {
+	BANNERS,
+    LOJAS,
+    PROFISSIONAIS,
+    PREMIOS,
+    VOUCHERS,
+    PERMISSOES,
+    EXTRATO_GERAL,
+    AVISOS,
+    AUTORIZAR_PREMIO
+}
+
+entity Loja {
+	nome String required
+    apresentacao TextBlob
+    razaoSocial String
+    cnpj String
+    bannerUrl String
+    logoUrl String
+    siteUrl String
+    destaque Boolean
+    facebookUrl String
+    instagramUrl String
+    linkedInUrl String
+    cep String
+    logradouro String
+    complemento String
+    numero String
+    bairro String
+    cidade String
+    estado String
+    latitude Double
+    longitude Double
+    criado ZonedDateTime required
+}
+
+enum TipoAnexo{
+	IMAGEM,YOUTUBE,VIDEO,ZIP,PDF,DOC,CAD,SITE
+}
+
+entity Anexo{
+	tipo TipoAnexo required
+	url String
+    descricao String
+    criado ZonedDateTime required
+    ativo Boolean
+}
+
+entity Banner {
+	titulo String required
+    imagemUrl String
+    criado ZonedDateTime required
+    ativo Boolean
+}
+
+enum TipoProfissional {
+	PF, PJ
+}
+
+entity Profissional {
+	nome String required
+    apresentacao TextBlob
+    tipo TipoProfissional
+    publico Boolean
+    destaque Boolean
+    logoUrl String
+    bannerUrl String
+    siteUrl String
+    telefone String
+    telefoneWhatsapp Boolean
+    cpf String
+    cnpj String
+    criado ZonedDateTime required
+    ativo Boolean
+    facebookUrl String
+    instagramUrl String
+    linkedInUrl String
+}
+
+entity Pontuacao {
+	valor Double required
+	criado ZonedDateTime required
+    comprovanteUrl String
+}
+
+entity Premio{
+	nome String required
+    descricao TextBlob
+    criado ZonedDateTime required
+    inicioValidade LocalDate
+    fimValidade LocalDate
+    ativo Boolean
+    destaque Boolean
+}
+
+entity ValorPremioLoja {
+    valor Double required
+    criado ZonedDateTime required
+    pago Boolean
+    dataPagamento ZonedDateTime
+    comprovanteUrl String
+}
+
+entity VoucherPremio {
+	totalPontos Double required
+    criado ZonedDateTime required
+    ativo Boolean
+    autorizado Boolean
+    retirado Boolean
+    dataRetirada ZonedDateTime
+}
+
+relationship OneToMany {
+  Administrador to PermissaoAdministrador{administrador(nome)}
+
+  Loja to Pontuacao{loja(nome)}
+  Profissional to Pontuacao{profissional(nome)}
+
+  Loja to Banner{loja(nome)}
+  Loja to Profissional{loja(nome)}
+  Loja to Administrador{loja(nome)}
+
+  Evento to Anexo{evento(nome)}
+  Loja to Anexo{loja(nome)}
+  Profissional to Anexo{profissional(nome)}
+  Premio to Anexo{premio(nome)}
+  VoucherPremio to Anexo{voucher}
+  Pontuacao to Anexo{pontuacao}
+
+  Loja to ValorPremioLoja{loja(nome)}
+
+  VoucherPremio to ValorPremioLoja{voucher}
+  Premio to VoucherPremio{premio(nome)}
+  Profissional to VoucherPremio{profissional(nome)}
+
+  Administrador to Aviso{administrador(nome)}
+  Administrador to Evento{administrador(nome)}
+  Administrador to Premio{administrador(nome)}
+  Administrador to VoucherPremio{autorizou(nome)}
+
+}
+
+relationship ManyToMany {
+  Profissional{favoritas} to Loja{profissionaisFavoritados}
+}
+
+relationship OneToOne {
+  Administrador{user} to User
+  Profissional{user} to User
+}
+
+// Set pagination options
+paginate * with pagination
+dto * with mapstruct
+service all with serviceImpl
+filter *
+
+

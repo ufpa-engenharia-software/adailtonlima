@@ -1,0 +1,63 @@
+entity CategoriaArtigo{
+	nome String
+    imagem String
+    ativo Boolean
+    criado ZonedDateTime
+}
+
+entity Artigo {
+	nome String
+    imagem String
+    texto TextBlob        
+    ativo Boolean    
+    criado ZonedDateTime    
+}
+
+entity Autor {
+	nome String
+    foto String
+    biografia TextBlob
+    cidadeNatal String
+    nascimento LocalDate    
+}
+
+enum TipoObra{
+	LIVRO,MUSICA
+}
+
+enum TipoAnexo{
+	FOTO,YOUTUBE,SITE,LINK
+}
+entity Anexo {
+	url String
+    tipo TipoAnexo
+    criado ZonedDateTime
+    ativo Boolean
+}
+
+entity Obra {
+	nome String
+    capa String
+    descricao TextBlob
+    tipo TipoObra
+    editora String
+    lancamento LocalDate
+    criado ZonedDateTime
+}
+
+relationship OneToMany {
+	CategoriaArtigo to Artigo{categoria(nome)}
+    Autor to Artigo{autor(nome)}
+    Autor to Obra{autor(nome)}
+    Obra to Artigo{obra(nome)}
+    Artigo to Anexo{artigo(nome)}
+    Autor to Anexo{autor(nome)}
+    Obra to Anexo{obra(nome)}
+}
+
+// Set pagination options
+paginate * with infinite-scroll
+
+service all with serviceImpl
+
+angularSuffix * with feiraLivro

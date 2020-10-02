@@ -1,0 +1,61 @@
+entity Jogo{
+data LocalDate,
+local String
+}
+
+entity Copa{
+ano LocalDate,
+pais String
+}
+
+entity Time{
+cidade String,
+nome String
+}
+
+entity Cartao{
+tempo ZonedDateTime,
+cor Cor
+}
+
+entity Gol{
+tempo ZonedDateTime
+}
+
+enum Cor{
+AMARELO, VERMELHO
+}
+
+entity Jogador{
+
+nome String,
+idade Integer,
+sexo Sexo,
+posicao String,
+camisa Integer,
+destro Boolean
+}
+
+enum Sexo {
+MASC, FEM, INDEF
+}
+
+entity Juiz{
+nome String,
+idade Integer,
+sexo Sexo,
+codFederacao String
+}
+
+
+relationship OneToMany { 
+	Copa {jogos} to Jogo {copa},
+	Time {jogadores} to Jogador{time},  
+	Jogo {cartoes} to Cartao{jogo},    
+    Jogo {gols} to Gol{jogo},    
+    Juiz {jogosApitados} to Jogo{juiz},
+    Juiz {jogosBandeira1} to Jogo{bandeira1},
+    Juiz {jogosBandeira2} to Jogo{bandeira2},
+    Time {jogosCasa} to Jogo{timeCasa},
+    Time {jogosVisitante} to Jogo{timeVisitante}
+} 
