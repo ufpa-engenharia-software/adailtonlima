@@ -127,13 +127,14 @@ entity Pontuacao {
 }
 
 entity Premio{
-	nome String required
+    nome String required
     descricao TextBlob
     criado ZonedDateTime required
     inicioValidade LocalDate
     fimValidade LocalDate
     ativo Boolean
     destaque Boolean
+    quantidadePontos Double
 }
 
 entity ValorPremioLoja {
@@ -145,7 +146,7 @@ entity ValorPremioLoja {
 }
 
 entity VoucherPremio {
-	totalPontos Double required
+    totalPontos Double required
     criado ZonedDateTime required
     ativo Boolean
     autorizado Boolean
