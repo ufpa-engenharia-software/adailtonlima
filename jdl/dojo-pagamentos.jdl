@@ -1,0 +1,73 @@
+entity Pessoa {
+  nome String required
+	email String required
+	telefone String required maxlength(9) pattern (/^[0-9]+\d$/)
+	dataNascimento LocalDate
+	cadastro ZonedDateTime
+}
+
+enum StatusCartao {
+	BLOQUEADO, LIBERADO, ROUBADO
+}
+
+entity Endereco {
+	nome String
+  logradouro String
+  numero Integer
+  referencia String
+  bairro String
+  cidade String
+  cep String
+}
+
+entity Categoria {
+	nome String
+  descricao String
+  pontuacaoMinima Integer
+}
+
+entity Cartao{
+	ndigitos String required maxlegth(16) pattern (/^[0-9]+\d$/)
+	status StatusCartao
+	nometitular String
+	codseguranca Integer
+	limitecredito Double
+	datavencimento LocalDate
+}
+
+entity Produto{
+	nome String
+	local String
+	dataCompra ZonedDateTime
+	valor Float
+}
+
+enum StatusFatura {
+GERADA, ATRASADA, CANCELADA
+}
+
+entity Fatura {
+	dataDeProcessamento LocalDate
+	valorTotal Double
+	status StatusFatura 
+	pontuacaoGanhar String
+}
+
+entity Pagamento {
+	data LocalDate
+  valor Double
+  nomeBanco String
+}
+
+relationship OnetoMany {
+  Endereco to Pessoa {endereco}
+  Pessoa to Cartao {pessoa}
+	Fatura{produtos} to Produto{fatura}
+  Cartao{} to Fatura{cartao}
+}
+
+relationship OneToOne{
+	Fatura{pagamento} to Pagamento{fatura}
+}
+
+
